@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="InvoiceGen">
+<title>Restaurant Invoice Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>InvoiceGen</h1>
+    <div class="tagline">Restaurant Invoice Generator</div>
+  </div>
+  <div class="cart-badge" onclick="switchTab(1)">
+    Cart <span id="cart-count">0</span>
+  </div>
+</header>
+
+<div class="main">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">Menu</button>
+    <button class="tab-btn" onclick="switchTab(1)">Cart</button>
+    <button class="tab-btn" onclick="switchTab(2)">Details</button>
+  </div>
+
+  <!-- TAB 0: MENU -->
+  <div class="tab-panel active" id="tab-0">
+    <input class="menu-search" type="text" placeholder="Search menu items..." oninput="filterMenu(this.value)" />
+    <div class="menu-grid" id="menu-grid"></div>
+  </div>
+
+  <!-- TAB 1: CART -->
+  <div class="tab-panel" id="tab-1">
+    <div class="card">
+      <div id="cart-body"></div>
+      <div class="totals-box" id="totals-box"></div>
+    </div>
+  </div>
+
+  <!-- TAB 2: DETAILS -->
+  <div class="tab-panel" id="tab-2">
+    <div class="card">
+      <div class="info-grid">
+        <div class="info-field full-width">
+          <label>Customer Name</label>
+          <input type="text" id="customer-name" placeholder="e.g. Ahmed Khan" />
+        </div>
+        <div class="info-field">
+          <label>Invoice #</label>
+          <input type="text" id="invoice-num" placeholder="Auto" />
+        </div>
+        <div class="info-field">
+          <label>Date</label>
+          <input type="date" id="invoice-date" />
+        </div>
+        <div class="info-field full-width">
+          <label>Notes (optional)</label>
+          <input type="text" id="invoice-notes" placeholder="e.g. No onions, extra sauce" />
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Restaurant Info</div>
+    <div class="card">
+      <div class="info-grid">
+        <div class="info-field full-width">
+          <label>Restaurant Name</label>
+          <input type="text" id="rest-name" value="New Alfatima Foods" />
+        </div>
+        <div class="info-field full-width">
+          <label>Address</label>
+          <input type="text" id="rest-addr" value="DHA phase 2 ext" />
+        </div>
+        <div class="info-field">
+          <label>Phone</label>
+          <input type="text" id="rest-phone" value="+92 3100104618" />
+        </div>
+        <div class="info-field">
+          <label>Tax % (optional)</label>
+          <input type="number" id="tax-pct" value="0" min="0" max="100" placeholder="0" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="action-bar">
+  <button class="btn btn-outline" onclick="clearCart()">Clear</button>
+  <button class="btn btn-primary" id="gen-btn" onclick="generateInvoice()" disabled>Generate Invoice</button>
+</div>
+
+<!-- INVOICE OVERLAY -->
+<div class="invoice-overlay" id="invoice-overlay">
+  <div class="invoice-container">
+    <div class="invoice-actions">
+      <button class="btn btn-outline" onclick="closeInvoice()">✕ Close</button>
+      <button class="btn btn-primary" onclick="downloadInvoice()">⬇ Download</button>
+      <button class="btn btn-accent" onclick="shareInvoice()">↗ Share</button>
+    </div>
+    <div id="invoice-capture"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js" defer></script>
+</body>
+</html>
